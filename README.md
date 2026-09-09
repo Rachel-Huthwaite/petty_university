@@ -115,3 +115,7 @@ Scoped GitLab issues, tracked through Backlog → Ready for Dev → In Dev → I
 ## Acknowledgments
 
 Named after and inspired by [Swoop](https://www.youtube.com/@Swoop)'s "Petty University" — thank you for the concept, and to my best friend, for all the episodes we watched together.
+
+## Verification Code:
+
+WTC-JZUYVLVB
