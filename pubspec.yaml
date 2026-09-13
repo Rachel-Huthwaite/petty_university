@@ -1,14 +1,22 @@
 name: petty_university
-description: "A new Flutter project."
-publish_to: 'none' 
+description: "A Flutter venting/reflection app inspired by Swoop's Petty University."
+publish_to: "none"
 version: 1.0.0+1
 
 environment:
-  sdk: ^3.13.1
+  sdk: ">=3.3.0 <4.0.0"
+
 dependencies:
   flutter:
     sdk: flutter
-  cupertino_icons: ^1.0.8
+
+  cupertino_icons: ^1.0.6
+
+  google_fonts: ^8.2.1
+
+  provider: ^6.1.2
+
+  shared_preferences: ^2.2.3
 
 dev_dependencies:
   flutter_test:
@@ -17,3 +25,7 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
+  assets:
+    - assets/designs/
+    - assets/images/
