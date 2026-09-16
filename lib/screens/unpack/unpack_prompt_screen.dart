@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import '../../theme/app_constants.dart';
 import '../../theme/app_theme.dart';
 import '../../widgets/glass_container.dart';
-import '../../widgets/image_button.dart';
+import '../../widgets/pill_button.dart';
 
 
 class UnpackPromptScreen extends StatelessWidget {
@@ -42,10 +42,10 @@ class UnpackPromptScreen extends StatelessWidget {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                         children: [
-                          ImageButton(
-                            assetPath: AppConstants.btnUnpack,
+                          PillButton(
                             label: 'Unpack',
                             labelStyle: AppTheme.unpackButtonLabel,
+                            color: AppTheme.accentGreen,
                             onTap: () {
                               Navigator.pushNamed(
                                 context,
@@ -54,10 +54,10 @@ class UnpackPromptScreen extends StatelessWidget {
                               );
                             },
                           ),
-                          ImageButton(
-                            assetPath: AppConstants.btnLater,
+                          PillButton(
                             label: 'Later',
                             labelStyle: AppTheme.unpackButtonLabel,
+                            color: AppTheme.accentPurple,
                             onTap: () {
                               // Case stays open — no provider change needed,
                               // it was already left open by the entry screen.
