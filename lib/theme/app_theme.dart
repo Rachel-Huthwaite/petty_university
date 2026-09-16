@@ -103,4 +103,27 @@ class AppTheme {
     fontSize: 22,
     color: textPrimary,
   );
+
+    static TextStyle unpackStatement = GoogleFonts.spaceMono(
+    fontSize: 16,
+    color: textPrimary,
+  );
+
+  static TextStyle unpackQuestion = GoogleFonts.spaceMono(
+    fontWeight: FontWeight.bold,
+    fontSize: 16,
+    color: textPrimary,
+  );
+
+  static TextStyle unpackSubtext = GoogleFonts.spaceMono(
+    fontStyle: FontStyle.italic,
+    fontSize: 11,
+    color: textSecondary,
+  );
+
+  static TextStyle unpackButtonLabel = GoogleFonts.spaceMono(
+    fontWeight: FontWeight.bold,
+    fontSize: 14,
+    color: textPrimary,
+  );
 }
