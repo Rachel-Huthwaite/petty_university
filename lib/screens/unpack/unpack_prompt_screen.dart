@@ -25,6 +25,7 @@ class UnpackPromptScreen extends StatelessWidget {
               child: Padding(
                 padding: const EdgeInsets.all(20),
                 child: GlassContainer(
+                  padding: const EdgeInsets.fromLTRB(28, 24, 20, 20),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisSize: MainAxisSize.min,
