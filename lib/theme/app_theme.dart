@@ -150,4 +150,11 @@ class AppTheme {
     fontSize: 15,
     color: textPrimary,
   );
+
+  // Mindfulness timer — Issue 4.2
+  static TextStyle resetCompleteSubtext = GoogleFonts.spaceMono(
+    fontStyle: FontStyle.italic,
+    fontSize: 15,
+    color: textSecondary,
+  );
 }

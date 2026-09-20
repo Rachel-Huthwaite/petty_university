@@ -75,28 +75,40 @@ class CaseProvider extends ChangeNotifier {
 
 
   Future<void> loadFromStorage() async {
-    final prefs = await SharedPreferences.getInstance();
-    final raw = prefs.getString(_storageKey);
-    if (raw == null) return;
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final raw = prefs.getString(_storageKey);
+      if (raw == null) return;
 
-    final List<dynamic> decoded = jsonDecode(raw) as List<dynamic>;
-    _cases
-      ..clear()
-      ..addAll(decoded.map((e) => CaseEntry.fromJson(e as Map<String, dynamic>)));
+      final List<dynamic> decoded = jsonDecode(raw) as List<dynamic>;
+      _cases
+        ..clear()
+        ..addAll(decoded.map((e) => CaseEntry.fromJson(e as Map<String, dynamic>)));
 
-    for (final c in _cases) {
-      final numeric = int.tryParse(c.id.replaceAll(RegExp(r'[^0-9]'), ''));
-      if (numeric != null && numeric > _caseCounter) {
-        _caseCounter = numeric;
+      for (final c in _cases) {
+        final numeric = int.tryParse(c.id.replaceAll(RegExp(r'[^0-9]'), ''));
+        if (numeric != null && numeric > _caseCounter) {
+          _caseCounter = numeric;
+        }
       }
-    }
 
-    notifyListeners();
+      notifyListeners();
+    } catch (e, stack) {
+      // Corrupt or unreadable storage shouldn't crash the app — worst case,
+      // the user starts with an empty case list instead of losing the app.
+      debugPrint('CaseProvider.loadFromStorage failed: $e\n$stack');
+    }
   }
 
   Future<void> _saveToStorage() async {
-    final prefs = await SharedPreferences.getInstance();
-    final encoded = jsonEncode(_cases.map((c) => c.toJson()).toList());
-    await prefs.setString(_storageKey, encoded);
+    try {
+      final prefs = await SharedPreferences.getInstance();
+      final encoded = jsonEncode(_cases.map((c) => c.toJson()).toList());
+      await prefs.setString(_storageKey, encoded);
+    } catch (e, stack) {
+      // A failed write means this change won't persist across restart, but
+      // it shouldn't take the whole app down over it.
+      debugPrint('CaseProvider._saveToStorage failed: $e\n$stack');
+    }
   }
 }
