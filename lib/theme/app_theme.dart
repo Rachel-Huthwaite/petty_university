@@ -138,4 +138,16 @@ class AppTheme {
     fontSize: 10,
     color: textSecondary,
   );
+
+    // Mindfulness prompt — Issue 4.1
+  static TextStyle mindfulnessStatement = GoogleFonts.spaceMono(
+    fontSize: 15,
+    color: textPrimary,
+  );
+
+  static TextStyle mindfulnessQuestion = GoogleFonts.spaceMono(
+    fontWeight: FontWeight.bold,
+    fontSize: 15,
+    color: textPrimary,
+  );
 }
