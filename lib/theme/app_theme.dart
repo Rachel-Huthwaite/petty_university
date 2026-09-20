@@ -126,4 +126,16 @@ class AppTheme {
     fontSize: 14,
     color: textPrimary,
   );
+
+  static TextStyle smallButtonLabel = GoogleFonts.spaceMono(
+    fontWeight: FontWeight.bold,
+    fontSize: 12,
+    color: textPrimary,
+  );
+
+  static TextStyle otherFieldHint = GoogleFonts.spaceGrotesk(
+    fontWeight: FontWeight.w300,
+    fontSize: 10,
+    color: textSecondary,
+  );
 }
