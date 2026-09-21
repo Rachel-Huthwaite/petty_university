@@ -5,6 +5,7 @@ import '../models/case_entry.dart';
 import '../providers/case_provider.dart';
 import '../theme/app_constants.dart';
 import '../theme/app_theme.dart';
+import '../widgets/glass_container.dart';
 
 class AddEntryScreenArgs {
   final String? caseId;
@@ -22,7 +23,6 @@ class AddEntryScreen extends StatefulWidget {
     this.caseId,
     this.isReadOnly = false,
   });
-
 
   @override
   State<AddEntryScreen> createState() => _AddEntryScreenState();
@@ -59,7 +59,6 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
   void _save() {
     final provider = context.read<CaseProvider>();
     provider.updateCase(_caseId, entryText: _controller.text);
-    // Issue 3.2 wires up UnpackPromptScreen to read this caseId.
     Navigator.pushNamed(context, '/unpack/prompt', arguments: _caseId);
   }
 
@@ -90,54 +89,74 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
         children: [
           Image.asset(AppConstants.wallpaperEntry, fit: BoxFit.cover),
           SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Lets dive in, unpack the mess,\nget grounded,\nand mind our business.",
-                    style: AppTheme.screenDescription,
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, right: 20, bottom: 4),
+                  child: GlassContainer(
+                    customBorderRadius: BorderRadius.only(
+                      topRight: Radius.circular(AppConstants.cornerRadius),
+                      bottomRight: Radius.circular(AppConstants.cornerRadius),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    child: Text(
+                      "Lets dive in, unpack the mess,\nget grounded,\nand mind our business.",
+                      style: AppTheme.screenDescription,
+                    ),
                   ),
-                  const SizedBox(height: 24),
+                ),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        textBaseline: TextBaseline.alphabetic,
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 0, 20, 20),
+                    child: GlassContainer(
+                      padding: const EdgeInsets.all(16),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          Text(_caseId, style: AppTheme.caseIdHeader),
-                          const SizedBox(width: 8),
-                          Text('- open', style: AppTheme.caseStatusOpenClosed),
-                        ],
-                      ),
-                      _EntryMenuButton(
-                        onSave: _save,
-                        onExit: _exit,
-                        onDiscard: _discard,
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                crossAxisAlignment: CrossAxisAlignment.baseline,
+                                textBaseline: TextBaseline.alphabetic,
+                                children: [
+                                  Text(_caseId, style: AppTheme.caseIdHeader),
+                                  const SizedBox(width: 8),
+                                  Text('- open', style: AppTheme.caseStatusOpenClosed),
+                                ],
+                              ),
+                              _EntryMenuButton(
+                                onSave: _save,
+                                onExit: _exit,
+                                onDiscard: _discard,
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
 
-                  Expanded(
-                    child: TextField(
-                      controller: _controller,
-                      maxLines: null,
-                      expands: true,
-                      textAlignVertical: TextAlignVertical.top,
-                      style: AppTheme.userInputText,
-                      cursorColor: AppTheme.textPrimary,
-                      decoration: const InputDecoration(
-                        border: InputBorder.none,
-                        hintText: 'What happened?',
+                          Expanded(
+                            child: TextField(
+                              controller: _controller,
+                              maxLines: null,
+                              expands: true,
+                              textAlignVertical: TextAlignVertical.top,
+                              style: AppTheme.userInputText,
+                              cursorColor: AppTheme.textPrimary,
+                              decoration: InputDecoration(
+                                border: InputBorder.none,
+                                hintText: 'Spill it...',
+                                hintStyle: AppTheme.entryHintText,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                   ),
-                ],
-              ),
+                ),
+              ],
             ),
           ),
         ],
@@ -168,35 +187,48 @@ class _AddEntryScreenState extends State<AddEntryScreen> {
                   ),
                   const SizedBox(height: 16),
 
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.baseline,
-                    textBaseline: TextBaseline.alphabetic,
-                    children: [
-                      Text(_caseId, style: AppTheme.caseIdHeader),
-                      const SizedBox(width: 8),
-                      Text('- closed', style: AppTheme.caseStatusOpenClosed),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
+                  Expanded(
+                    child: SingleChildScrollView(
+                      child: GlassContainer(
+                        padding: const EdgeInsets.fromLTRB(28, 24, 20, 24),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.baseline,
+                              textBaseline: TextBaseline.alphabetic,
+                              children: [
+                                Text(_caseId, style: AppTheme.caseIdHeader),
+                                const SizedBox(width: 8),
+                                Text('- closed', style: AppTheme.caseStatusOpenClosed),
+                              ],
+                            ),
+                            const SizedBox(height: 16),
 
-                  Text(entry?.entryText ?? '', style: AppTheme.userInputText),
-                  const SizedBox(height: 32),
+                            Text(entry?.entryText ?? '', style: AppTheme.userInputText),
+                            const SizedBox(height: 32),
 
-                  if (entry != null) ...[
-                    Text('I was needing:', style: AppTheme.caseIdHeader),
-                    const SizedBox(height: 12),
-                    ...entry.needs.map(
-                      (need) => Padding(
-                        padding: const EdgeInsets.only(bottom: 4),
-                        child: Text(need, style: AppTheme.needOptionLabel),
+                            if (entry != null) ...[
+                              Text('I was needing:', style: AppTheme.caseIdHeader),
+                              const SizedBox(height: 12),
+                              ...entry.needs.map(
+                                (need) => Padding(
+                                  padding: const EdgeInsets.only(bottom: 4),
+                                  child: Text(need, style: AppTheme.needOptionLabel),
+                                ),
+                              ),
+                              if (entry.otherNeed.isNotEmpty)
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 4),
+                                  child: Text(entry.otherNeed, style: AppTheme.needOptionLabel),
+                                ),
+                            ],
+                          ],
+                        ),
                       ),
                     ),
-                    if (entry.otherNeed.isNotEmpty)
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 4),
-                        child: Text(entry.otherNeed, style: AppTheme.needOptionLabel),
-                      ),
-                  ],
+                  ),
                 ],
               ),
             ),

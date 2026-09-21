@@ -74,6 +74,11 @@ class AppTheme {
     color: textPrimary,
   );
 
+  static TextStyle entryHintText = GoogleFonts.spaceMono(
+    fontSize: 10,
+    color: textSecondary,
+  );
+
   static TextStyle classifiedReceiptsHeader = GoogleFonts.spaceMono(
     fontWeight: FontWeight.bold,
     fontSize: 16,

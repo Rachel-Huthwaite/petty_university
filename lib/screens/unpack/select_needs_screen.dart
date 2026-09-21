@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../../providers/case_provider.dart';
 import '../../theme/app_constants.dart';
 import '../../theme/app_theme.dart';
+import '../../widgets/glass_container.dart';
 import '../../widgets/pill_button.dart';
 
 class SelectNeedsScreen extends StatefulWidget {
@@ -78,34 +79,43 @@ class _SelectNeedsScreenState extends State<SelectNeedsScreen> {
                     ),
                     const SizedBox(height: 24),
 
-                    ...SelectNeedsScreen.presetNeeds.map(
-                      (need) => _NeedCheckboxRow(
-                        label: need,
-                        selected: _selected.contains(need),
-                        onTap: () => _toggle(need),
-                      ),
-                    ),
-                    const SizedBox(height: 24),
+                    GlassContainer(
+                      padding: const EdgeInsets.fromLTRB(28, 24, 20, 24),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          ...SelectNeedsScreen.presetNeeds.map(
+                            (need) => _NeedCheckboxRow(
+                              label: need,
+                              selected: _selected.contains(need),
+                              onTap: () => _toggle(need),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
 
-                    Text('Other:', style: AppTheme.otherFieldLabel),
-                    const SizedBox(height: 4),
-                    Text(
-                      'Type what you were actually needing here…',
-                      style: AppTheme.otherFieldHint,
-                    ),
-                    const SizedBox(height: 8),
-                    Container(
-                      padding: const EdgeInsets.all(12),
-                      decoration: BoxDecoration(
-                        color: Colors.black.withOpacity(0.3),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: TextField(
-                        controller: _otherController,
-                        maxLines: 3,
-                        style: AppTheme.userInputText,
-                        cursorColor: AppTheme.textPrimary,
-                        decoration: const InputDecoration(border: InputBorder.none),
+                          Text('Other:', style: AppTheme.otherFieldLabel),
+                          const SizedBox(height: 4),
+                          Text(
+                            'Type what you were actually needing here…',
+                            style: AppTheme.otherFieldHint,
+                          ),
+                          const SizedBox(height: 8),
+                          Container(
+                            padding: const EdgeInsets.all(12),
+                            decoration: BoxDecoration(
+                              color: Colors.black.withOpacity(0.25),
+                              borderRadius: BorderRadius.circular(16),
+                            ),
+                            child: TextField(
+                              controller: _otherController,
+                              maxLines: 3,
+                              style: AppTheme.userInputText,
+                              cursorColor: AppTheme.textPrimary,
+                              decoration: const InputDecoration(border: InputBorder.none),
+                            ),
+                          ),
+                        ],
                       ),
                     ),
                     const SizedBox(height: 28),

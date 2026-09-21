@@ -5,6 +5,7 @@ import '../models/case_entry.dart';
 import '../providers/case_provider.dart';
 import '../theme/app_constants.dart';
 import '../theme/app_theme.dart';
+import '../widgets/glass_container.dart';
 import 'add_entry_screen.dart';
 
 
@@ -29,59 +30,75 @@ class _CasesScreenState extends State<CasesScreen> {
           Image.asset(AppConstants.wallpaperCases, fit: BoxFit.cover),
 
           SafeArea(
-            child: Padding(
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "A record of every time the noise tried to win\n(and you unpacked it instead...hopefully)",
-                    style: AppTheme.screenDescription,
-                  ),
-                  const SizedBox(height: 24),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text('CLASSIFIED RECEIPTS', style: AppTheme.classifiedReceiptsHeader),
-                      _MenuButton(
-                        onOpenCase: _createNewCase,
-                        onFilterSelected: (f) => setState(() => _filter = f),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 16),
-
-                  Expanded(
-                    child: Consumer<CaseProvider>(
-                      builder: (context, provider, _) {
-                        final cases = _filteredCases(provider);
-
-                        if (cases.isEmpty) {
-                          return Text(
-                            provider.cases.isEmpty
-                                ? 'No cases yet.'
-                                : 'No cases match this filter.',
-                            style: AppTheme.caseListStatus,
-                          );
-                        }
-
-                        return ListView.separated(
-                          itemCount: cases.length,
-                          separatorBuilder: (_, __) => const SizedBox(height: 12),
-                          itemBuilder: (context, index) {
-                            final entry = cases[index];
-                            return _CaseListTile(
-                              entry: entry,
-                              onTap: () => _openCase(entry),
-                            );
-                          },
-                        );
-                      },
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(top: 20, right: 20, bottom: 4),
+                  child: GlassContainer(
+                    customBorderRadius: BorderRadius.only(
+                      topRight: Radius.circular(AppConstants.cornerRadius),
+                      bottomRight: Radius.circular(AppConstants.cornerRadius),
+                    ),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                    child: Text(
+                      "A record of every time the noise tried to win\n(and you unpacked it instead...hopefully)",
+                      style: AppTheme.screenDescription,
                     ),
                   ),
-                ],
-              ),
+                ),
+
+                Expanded(
+                  child: Padding(
+                    padding: const EdgeInsets.fromLTRB(20, 20, 20, 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text('CLASSIFIED RECEIPTS', style: AppTheme.classifiedReceiptsHeader),
+                            _MenuButton(
+                              onOpenCase: _createNewCase,
+                              onFilterSelected: (f) => setState(() => _filter = f),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16),
+
+                        Expanded(
+                          child: Consumer<CaseProvider>(
+                            builder: (context, provider, _) {
+                              final cases = _filteredCases(provider);
+
+                              if (cases.isEmpty) {
+                                return Text(
+                                  provider.cases.isEmpty
+                                      ? 'No cases yet.'
+                                      : 'No cases match this filter.',
+                                  style: AppTheme.caseListStatus,
+                                );
+                              }
+
+                              return ListView.separated(
+                                itemCount: cases.length,
+                                separatorBuilder: (_, __) => const SizedBox(height: 12),
+                                itemBuilder: (context, index) {
+                                  final entry = cases[index];
+                                  return _CaseListTile(
+                                    entry: entry,
+                                    onTap: () => _openCase(entry),
+                                  );
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
           ),
         ],
@@ -132,21 +149,16 @@ class _CaseListTile extends StatelessWidget {
   Widget build(BuildContext context) {
     final statusLabel = entry.status == CaseStatus.open ? 'OPEN' : 'CLOSED';
 
-    return Material(
-      color: Colors.black.withOpacity(0.35),
-      borderRadius: BorderRadius.circular(AppConstants.cornerRadius),
-      child: InkWell(
-        borderRadius: BorderRadius.circular(AppConstants.cornerRadius),
-        onTap: onTap,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-          child: Row(
-            children: [
-              Text(entry.id, style: AppTheme.caseListId),
-              const SizedBox(width: 8),
-              Text('- $statusLabel', style: AppTheme.caseListStatus),
-            ],
-          ),
+    return GestureDetector(
+      onTap: onTap,
+      child: GlassContainer(
+        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+        child: Row(
+          children: [
+            Text(entry.id, style: AppTheme.caseListId),
+            const SizedBox(width: 8),
+            Text('- $statusLabel', style: AppTheme.caseListStatus),
+          ],
         ),
       ),
     );

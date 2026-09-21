@@ -7,34 +7,36 @@ import '../theme/app_constants.dart';
 class GlassContainer extends StatelessWidget {
   final Widget child;
   final double radius;
+  final BorderRadius? customBorderRadius;
   final double blurSigma;
   final double overlayOpacity;
+  final Color overlayColor;
   final EdgeInsetsGeometry padding;
 
   const GlassContainer({
     super.key,
     required this.child,
     this.radius = AppConstants.cornerRadius,
-    this.blurSigma = 12,
-    this.overlayOpacity = 0.15,
+    this.customBorderRadius,
+    this.blurSigma = 16,
+    this.overlayOpacity = 0.2,
+    this.overlayColor = Colors.black,
     this.padding = const EdgeInsets.all(16),
   });
 
   @override
   Widget build(BuildContext context) {
+    final effectiveRadius = customBorderRadius ?? BorderRadius.circular(radius);
+
     return ClipRRect(
-      borderRadius: BorderRadius.circular(radius),
+      borderRadius: effectiveRadius,
       child: BackdropFilter(
         filter: ImageFilter.blur(sigmaX: blurSigma, sigmaY: blurSigma),
         child: Container(
           padding: padding,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(overlayOpacity),
-            borderRadius: BorderRadius.circular(radius),
-            border: Border.all(
-              color: Colors.white.withOpacity(0.2),
-              width: 1,
-            ),
+            color: overlayColor.withOpacity(overlayOpacity),
+            borderRadius: effectiveRadius,
           ),
           child: child,
         ),
