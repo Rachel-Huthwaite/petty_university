@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:firebase_core/firebase_core.dart';
 
+import 'firebase_options.dart';
 import 'providers/case_provider.dart';
 import 'theme/app_theme.dart';
 import 'screens/home_screen.dart';
@@ -11,8 +13,11 @@ import 'screens/unpack/name_need_screen.dart';
 import 'screens/unpack/select_needs_screen.dart';
 import 'screens/unpack/mindfulness_prompt_screen.dart';
 import 'screens/unpack/mindfulness_timer_screen.dart';
+import 'widgets/auth_gate.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const PettyUniversityApp());
 }
 
@@ -27,7 +32,7 @@ class PettyUniversityApp extends StatelessWidget {
         title: 'pettyUniversity',
         debugShowCheckedModeBanner: false,
         theme: AppTheme.themeData,
-        initialRoute: '/home',
+        home: const AuthGate(),
 
         onGenerateRoute: (settings) {
           if (settings.name == '/entry') {

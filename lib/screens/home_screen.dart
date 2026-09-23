@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../services/auth_service.dart';
 import '../theme/app_constants.dart';
 import '../theme/app_theme.dart';
 import 'add_entry_screen.dart';
@@ -28,8 +29,19 @@ class HomeScreen extends StatelessWidget {
                   Align(
                     alignment: Alignment.topLeft,
                     child: _CircleIconButton(
-                      assetPath: AppConstants.iconCase,
+                      icon: Image.asset(AppConstants.iconCase,
+                          width: 24, height: 24),
                       onTap: () => Navigator.pushNamed(context, '/cases'),
+                    ),
+                  ),
+
+                  // Sign out, top-right
+                  Align(
+                    alignment: Alignment.topRight,
+                    child: _CircleIconButton(
+                      icon: const Icon(Icons.logout,
+                          color: Colors.white, size: 22),
+                      onTap: () => AuthService().signOut(),
                     ),
                   ),
 
@@ -57,10 +69,10 @@ class HomeScreen extends StatelessWidget {
 }
 
 class _CircleIconButton extends StatelessWidget {
-  final String assetPath;
+  final Widget icon;
   final VoidCallback onTap;
 
-  const _CircleIconButton({required this.assetPath, required this.onTap});
+  const _CircleIconButton({required this.icon, required this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -72,7 +84,7 @@ class _CircleIconButton extends StatelessWidget {
         onTap: onTap,
         child: Padding(
           padding: const EdgeInsets.all(10),
-          child: Image.asset(assetPath, width: 24, height: 24),
+          child: icon,
         ),
       ),
     );
